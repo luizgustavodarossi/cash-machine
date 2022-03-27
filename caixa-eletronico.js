@@ -4,29 +4,16 @@ const formCurrency = new Intl.NumberFormat('pt-BR', {
     minimumFractionDigits: 2
 });
 
-const cedulas_disponiveis = [
-    { valor: 200, qtd: parseInt(Math.random() * 10) },
-    { valor: 100, qtd: parseInt(Math.random() * 10) },
-    { valor: 50, qtd: parseInt(Math.random() * 10) },
-    { valor: 20, qtd: parseInt(Math.random() * 10) },
-    { valor: 10, qtd: parseInt(Math.random() * 10) },
-    { valor: 5, qtd: parseInt(Math.random() * 10) },
-    { valor: 2, qtd: parseInt(Math.random() * 10) },
-    { valor: 1, qtd: parseInt(Math.random() * 10) },
-    { valor: 0.5, qtd: parseInt(Math.random() * 10) },
-    { valor: 0.25, qtd: parseInt(Math.random() * 10) },
-    { valor: 0.1, qtd: parseInt(Math.random() * 10) },
-    { valor: 0.05, qtd: parseInt(Math.random() * 10) },
-];
+const cedulas = [200, 100, 50, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05];
+
+const cedulas_disponiveis = cedulas.map(valor => { return { valor, qtd: parseInt(Math.random() * 10) } });
 console.log('Cedulas Disponíveis')
 console.log(cedulas_disponiveis)
 
 let saldo_cliente = parseInt(Math.random() * 1000);
 
 const ConsultarSaldo = (arrCed) => arrCed.reduce((acu, cedl) => acu + (cedl.valor * cedl.qtd), 0);
-const ConsultarSaldoCedula = (arrCed, vSaque) => {
-    return ConsultarSaldo(arrCed.filter(ced => vSaque >= ced.valor));
-};
+const ConsultarSaldoCedula = (arrCed, vSaque) => { ConsultarSaldo(arrCed.filter(ced => vSaque >= ced.valor)); };
 
 const CalcularCedulasSaque = (valor, ncedula = 0) => {
     let arraySaqueCedulas = [];
@@ -53,13 +40,12 @@ const CalcularCedulasSaque = (valor, ncedula = 0) => {
 
         } else {
             /**Próxima cédula */
-            arraySaqueCedulas = arraySaqueCedulas.concat(CalcularCedulasSaque(valor, ncedula + 1));
+            arraySaqueCedulas = [...arraySaqueCedulas, ...CalcularCedulasSaque(valor, ncedula + 1)];
             break;
         }
     }
 
     return arraySaqueCedulas;
-
 };
 
 const Sacar = (valorSaque) => {
@@ -72,9 +58,7 @@ const Sacar = (valorSaque) => {
         if (saldo_cliente >= valorSaque) {
             const result = CalcularCedulasSaque(valorSaque);
             message += `\nSaldo Inicial: ${formCurrency.format(saldo_cliente)}\n`;
-            result.map(e => {
-                message += `\n${e.qtd} ${e.valor <= 1 ? "moeda" : "cédula"}${e.qtd == 1 ? "" : "s"} de ${formCurrency.format(e.valor)}.`;
-            });
+            result.map(e => { message += `\n${e.qtd} ${e.valor <= 1 ? "moeda" : "cédula"}${e.qtd == 1 ? "" : "s"} de ${formCurrency.format(e.valor)}.`; });
             saldo_cliente -= ConsultarSaldo(result);
             message += `\n\nSaldo Final: ${formCurrency.format(saldo_cliente)}`;
         } else {
@@ -87,9 +71,9 @@ const Sacar = (valorSaque) => {
     return message;
 };
 
-console.log(Sacar(parseFloat(Math.random() * 100).toFixed(2)));
-console.log(Sacar(parseFloat(Math.random() * 100).toFixed(2)));
-console.log(Sacar(parseFloat(Math.random() * 10).toFixed(2)));
-console.log(Sacar(parseFloat(Math.random() * 10).toFixed(2)));
-console.log(Sacar(parseFloat(Math.random() * 10).toFixed(2)));
-console.log(Sacar(parseFloat(Math.random() * 10).toFixed(2)));
+const pesoSaque = [100, 100, 10, 10, 10, 10];
+
+for (let index = 0; index < pesoSaque.length; index++) {
+    const element = pesoSaque[index];
+    console.log(Sacar(parseFloat(Math.random() * element).toFixed(2)))
+}
