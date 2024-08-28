@@ -1,9 +1,20 @@
-document.querySelector('#money').addEventListener('input', function () {
-  const balance = Number(document.querySelector('#balance').value);
-  const balanceMachine = Number(document.querySelector('#balance-machine').value);
-  const max = Math.min(balance, balanceMachine);
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelector('#balance').value = (Math.random() * 1000).toFixed(2);
+  document.querySelector('#balance-machine').value = (Math.random() * 1000).toFixed(2);
+})
 
-  document.querySelector('#money').setAttribute('max', max);
+document.querySelectorAll('#money, #balance, #balance-machine').forEach(function (element) {
+  element.addEventListener('input', function () {
+    const balance = parseFloat(document.querySelector('#balance').value) || 0;
+    const balanceMachine = parseFloat(document.querySelector('#balance-machine').value) || 0;
+    
+    const max = Math.min(balance, balanceMachine);
+
+    const moneyElement = document.querySelector('#money');
+    if (moneyElement.getAttribute('max') !== max.toString()) {
+      moneyElement.setAttribute('max', max);
+    }
+  })
 })
 
 function statement(text) {
@@ -16,9 +27,9 @@ function statement(text) {
 function calculate(event) {
   event.preventDefault();
 
-  const value = Number(event.target.money.value);
+  const value = parseFloat(event.target.money.value);
 
-  const notas = [100, 50, 20, 10, 5, 2, 1, 0.5, 0.25, 0.1, 0.05, 0.01];
+  const notas = [100, 50, 20, 10, 5, 2];
   let result = value;
   let resultText = '';
 
@@ -30,6 +41,10 @@ function calculate(event) {
       resultText += `${qtd} ${nota >= 2 ? "nota" : "moeda"}${qtd > 1 ? "s" : ""} de R$ ${nota.toFixed(2)}\n`;
       result = result % nota;
     }
+  }
+
+  if (result > 0.00) {
+    resultText += `R$ ${result.toFixed(2)} restante\n`;
   }
 
   document.querySelector('#statement').innerHTML = statement(resultText);

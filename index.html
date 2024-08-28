@@ -43,10 +43,9 @@
             <label for="balance-machine" class="form-label">Digite o saldo do caixa eletrônico</label>
             <div class="input-group">
               <span class="input-group-text">R$</span>
-              <input type="number" step="0.01" min="0.00" class="form-control" id="balance-machine" name="balance-machine"
-                value="327.50" required>
+              <input type="number" step="0.01" min="0.00" class="form-control" id="balance-machine"
+                name="balance-machine" required>
             </div>
-            
           </div>
         </div>
 
@@ -55,8 +54,7 @@
             <label for="balance" class="form-label">Digite o saldo da sua carteira</label>
             <div class="input-group">
               <span class="input-group-text">R$</span>
-              <input type="number" step="0.01" min="0.00" class="form-control" id="balance" name="balance"
-                value="86.63" required>
+              <input type="number" step="0.01" min="0.00" class="form-control" id="balance" name="balance" required>
             </div>
           </div>
         </div>
@@ -70,15 +68,18 @@
             <label for="money" class="form-label">Digite o valor que deseja sacar</label>
             <div class="input-group">
               <span class="input-group-text">R$</span>
-              <input type="number" step="0.01" min="0.00" class="form-control" id="money" name="money" required>
+              <input type="number" step="0.01" min="0.00" class="form-control" id="money" name="money" autofocus
+                required>
             </div>
           </div>
         </div>
 
         <div class="col mb-3">
           <button type="submit" class="btn btn-success"><i class="bi bi-cash"></i> Sacar</button>
-          <button type="reset" onclick="resetForm()" class="btn btn-warning"><i class="bi bi-eraser-fill"></i>
-            Limpar</button>
+          <button type="reset" onclick="resetForm()" class="btn btn-warning">
+            <i class="bi bi-eraser-fill"></i>
+            Limpar
+          </button>
         </div>
       </div>
     </form>
